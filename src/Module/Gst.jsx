@@ -6,11 +6,8 @@ const Gst = () => {
   const [FinalPrice, setFinalPrice] = useState(0);
   const [GstRate, setGstRate] = useState(5);
   const [CSGstRate, setCSGstRate] = useState(0);
-  const [className, setClassName] = useState("");
-  const backspace = <Img/>
-  const handleGst = (rate) => {
-    setGstRate(rate);
-  };
+  const backspace = <Img />;
+
   useEffect(() => {
     if (Price) {
       const result =
@@ -22,9 +19,23 @@ const Gst = () => {
       setCSGstRate(0);
       setFinalPrice(0);
     }
-    console.log(GstRate);
   }, [Price, GstRate]);
 
+  const handleGst = (rate) => {
+    setGstRate(rate);
+  };
+
+  const handleButtonClick = (button) => {
+    if (button === "C") {
+      setPrice("");
+    } else if (button === backspace) {
+      setPrice(Price.slice(0, -1));
+    } else if (!["%", "/", "*", "-", "+"].includes(button)) {
+      setPrice(Price + button);
+    } else if (button === "=") {
+        setPrice(Price + Price);
+    }
+  };
   const buttons = [
     ["C", "7", "4", "1", "00"],
     [backspace, "8", "5", "2", "0"],
@@ -32,22 +43,10 @@ const Gst = () => {
     ["/", "*", "-", "+", "="],
   ];
 
-  const handleButtonClick = (button) => {
-    if (button === "c") {
-      setPrice("");
-    } else if (button === "e") {
-      setPrice(Price.slice(0, -1));
-    } else if (button === "=") {
-      setPrice(parseInt(Price) + parseInt(Price));
-
-      // Additional logic will be needed to handle multiple additions
-    } else if (!["%", "/", "*", "-", "+"].includes(button)) {
-      setPrice(Price + button);
-    }
-  };
-
   return (
-    <div className="h-screen bg-black text-white flex flex-col justify-start sm:justify-center gap-3 sm:gap-5 items-center ">
+    <div className="h-screen bg-black text-white flex flex-col justify-start sm:justify-center gap-3 sm:gap-5 items-center">
+      {/* Input and Display Components Here */}
+
       <div className=" hidden sm:block bg-[#2c2c2c] text-orange-500 px-10 py-2 font-bold text-xl rounded-lg animate-pulse">
         Not Avaiable For Desktop
       </div>
@@ -140,7 +139,7 @@ const Gst = () => {
           </div>
         ))}
       </div>
-      <footer className='bg-black text-white flex justify-center flex-col items-center mt-2 '>
+      <footer className="bg-black text-white flex justify-center flex-col items-center mt-2">
         <div>All Rights Reserved {new Date().getFullYear()}</div>
         <div>Saichandan Gorli</div>
       </footer>
